@@ -1,367 +1,511 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#a9d5f5">
-<title>Wen0x — Gmail Store</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#edf5ff">
+<title>Wen0x — Digital Store</title>
 
 <style>
-*{box-sizing:border-box}
-
-html,body{
- margin:0;
- width:100%;
- height:100%;
- overflow:hidden;
- font-family:-apple-system,Arial,sans-serif;
- background:#b9dcff;
- color:#21476e;
-}
-
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
 body{
- background:
- linear-gradient(#b5dfff55,#b5dfff88),
- url("anime.png") center/cover fixed no-repeat;
+ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ color:#172b45;
+ background:linear-gradient(135deg,#eaf4ff,#dceaff,#f4f8ff);
 }
-
-.viewport{
- width:100%;
- height:100%;
- overflow-y:auto;
- overflow-x:hidden;
- scroll-behavior:smooth;
- scrollbar-width:none;
- overscroll-behavior:contain;
- touch-action:pan-x;
+body:before,body:after{
+ content:"";position:fixed;border-radius:50%;pointer-events:none;
 }
-.viewport::-webkit-scrollbar{display:none}
-
+body:before{
+ width:340px;height:340px;top:-100px;right:-100px;
+ background:radial-gradient(circle,#8bc5ff70,transparent 70%);
+}
+body:after{
+ width:360px;height:360px;bottom:-160px;left:-130px;
+ background:radial-gradient(circle,#a8a4ff55,transparent 70%);
+}
+#viewport{height:100%;position:relative;z-index:1}
 .screen{
- min-height:100%;
- height:100%;
- display:flex;
- align-items:center;
- justify-content:center;
- padding:20px;
+ position:absolute;inset:0;padding:25px 20px 150px;
+ display:flex;align-items:center;justify-content:center;
+ opacity:0;visibility:hidden;
+ transform:translateY(25px) scale(.98);
+ transition:opacity 1.25s ease,transform 1.25s cubic-bezier(.2,.7,.2,1),visibility 1.25s;
 }
-
-.card{
- width:100%;
- max-width:420px;
- max-height:94%;
- overflow:auto;
- scrollbar-width:none;
- padding:27px 22px;
- text-align:center;
- border-radius:30px;
- background:linear-gradient(145deg,#ffffffbd,#e5f4ffb8);
- border:1px solid white;
- box-shadow:0 20px 65px #477eaa30,
- inset 0 1px 1px white;
- backdrop-filter:blur(24px);
- -webkit-backdrop-filter:blur(24px);
- animation:appear 1000ms cubic-bezier(.16,1,.3,1);
+.screen.active{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+.content{
+ width:min(100%,520px);text-align:center;
+ transition:filter .55s ease,transform .55s ease;
 }
-.card::-webkit-scrollbar{display:none}
-
-@keyframes appear{
- from{opacity:0;transform:translateY(35px) scale(.96);filter:blur(7px)}
- to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+#viewport.transition-blur .screen.active .content{
+ filter:blur(15px);transform:scale(.97);
 }
-
-.brand{
- font-size:39px;
- font-weight:900;
- letter-spacing:2px;
- color:#244e78;
+.glass{
+ padding:30px 23px;border-radius:30px;
+ background:#ffffffb8;border:1px solid #ffffffdf;
+ box-shadow:0 20px 65px #4777b51a;
+ backdrop-filter:blur(22px);
 }
-.brand span{color:#4199dc}
-
-.line{
- width:65px;
- height:3px;
- border-radius:10px;
- background:#65b5ef;
- margin:12px auto 20px;
-}
-
-.icon{
- width:80px;
- height:80px;
- display:grid;
- place-items:center;
- margin:20px auto;
- font-size:43px;
- border-radius:25px;
- background:#ffffffb8;
- border:1px solid white;
- box-shadow:0 8px 25px #5298cb25;
-}
-
-h1{font-size:26px;margin:12px 0}
-p{font-size:14px;line-height:1.7;color:#587b9d}
-
+h1{font-size:clamp(48px,12vw,76px);letter-spacing:-4px}
+h2{font-size:29px;letter-spacing:-1px;margin:12px 0}
+p{color:#62748b;line-height:1.65;font-size:15px}
 .tag{
- display:inline-block;
- padding:11px 16px;
- margin-top:12px;
- border-radius:15px;
- background:#d9efff;
- border:1px solid white;
- color:#347db7;
- font-size:13px;
- font-weight:700;
+ display:inline-block;padding:8px 14px;border-radius:30px;
+ background:#e6f1ff;color:#3678d5;font-size:11px;
+ font-weight:800;letter-spacing:1.5px;margin-bottom:17px
 }
-
-.features{
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:9px;
- margin-top:22px;
+.logo{
+ width:82px;height:82px;border-radius:27px;margin:0 auto 20px;
+ display:grid;place-items:center;color:white;font-size:43px;font-weight:900;
+ background:linear-gradient(145deg,#65b5ff,#3974e8);
+ box-shadow:0 15px 35px #4285f444;
+ animation:float 4s ease-in-out infinite;
 }
-
-.feature{
- padding:13px 5px;
- border:1px solid white;
- border-radius:16px;
- background:#ffffff8c;
- font-size:11px;
- color:#50789c;
-}
-.feature b{
- display:block;
- font-size:23px;
- margin-bottom:7px;
-}
-
-.progress-bg{
- height:10px;
- margin-top:22px;
- border-radius:20px;
- background:#d5eaff;
- overflow:hidden;
-}
-.progress{
- height:100%;
- width:0;
- border-radius:20px;
- background:linear-gradient(90deg,#55a9ef,#9ce3ff);
- transition:width 1200ms ease;
-}
-
-.status{
- font-size:13px;
- margin-top:14px;
- color:#52799e;
-}
+@keyframes float{50%{transform:translateY(-9px) rotate(2deg)}}
+.reveal{opacity:0;transform:translateY(17px)}
+.active .reveal{animation:reveal .85s cubic-bezier(.2,.7,.2,1) forwards}
+.active .reveal:nth-child(2){animation-delay:.12s}
+.active .reveal:nth-child(3){animation-delay:.24s}
+.active .reveal:nth-child(4){animation-delay:.36s}
+.active .reveal:nth-child(5){animation-delay:.48s}
+@keyframes reveal{to{opacity:1;transform:translateY(0)}}
 
 .button{
- display:block;
- padding:15px;
- margin-top:20px;
- border-radius:15px;
- background:#398edb;
- color:white;
- text-decoration:none;
- font-weight:800;
+ display:inline-block;text-decoration:none;color:white;
+ background:linear-gradient(110deg,#4285f4,#2864d8);
+ padding:15px 24px;border-radius:16px;font-weight:750;
+ margin-top:20px;box-shadow:0 9px 24px #4285f444;
+ transition:transform .3s;
+}
+.button:active{transform:scale(.96)}
+.product{
+ background:#fff;border-radius:26px;padding:27px 22px;
+ box-shadow:0 15px 45px #4285f41b;
+}
+.gmail{
+ width:82px;height:64px;margin:12px auto 20px;
+ position:relative;border:6px solid #4285f4;border-top:0;
+ border-radius:5px 5px 12px 12px;background:#fff;
+}
+.gmail:before,.gmail:after{
+ content:"";position:absolute;top:8px;width:55px;height:6px;
+ background:#ea4335;
+}
+.gmail:before{left:-7px;transform:rotate(34deg);transform-origin:left}
+.gmail:after{right:-7px;transform:rotate(-34deg);transform-origin:right}
+
+.mail{
+ margin-top:20px;background:white;border-radius:20px;
+ overflow:hidden;text-align:left;box-shadow:0 12px 30px #416caa16;
+}
+.mailhead{padding:15px;background:#f5f8ff;color:#4285f4;font-weight:800}
+.mailrow{
+ padding:14px;display:flex;align-items:center;gap:12px;
+ border-top:1px solid #edf1f7;opacity:0;
+ animation:mail .8s ease forwards;
+}
+.mailrow:nth-child(2){animation-delay:.4s}
+.mailrow:nth-child(3){animation-delay:.8s}
+.mailrow:nth-child(4){animation-delay:1.2s}
+@keyframes mail{to{opacity:1;transform:translateX(0)}from{opacity:0;transform:translateX(-15px)}}
+.avatar{
+ width:37px;height:37px;border-radius:50%;display:grid;place-items:center;
+ background:#e9f2ff;color:#3978d7;font-weight:800;flex-shrink:0
+}
+.mailrow small{color:#8291a5}
+.news{display:grid;gap:12px;margin-top:19px;text-align:left}
+.newsitem{
+ background:#fff;border:1px solid #edf2f9;border-radius:18px;
+ padding:16px;box-shadow:0 8px 24px #4777b510;
+}
+.newsitem b{display:block;margin-bottom:5px}
+.newsitem p{font-size:13px}
+.newsitem span{font-size:10px;color:#4382db;font-weight:800;letter-spacing:1px}
+.progress{height:7px;background:#e2edfc;border-radius:20px;overflow:hidden;margin-top:24px}
+.progress span{
+ display:block;width:0;height:100%;
+ background:linear-gradient(90deg,#62b4ff,#3675ed);
+ transition:width 5s linear;
+}
+#counter{
+ position:fixed;bottom:145px;left:0;width:100%;text-align:center;
+ font-size:11px;color:#8195ad;z-index:5;letter-spacing:1px;
 }
 
-.footer{
- margin-top:18px;
- font-size:11px;
- color:#7899b7;
+/* ДЕТАЛЬНЫЙ ЧЁРНЫЙ КОТИК */
+#cuteCat{
+ position:fixed;
+ z-index:30;
+ bottom:22px;
+ left:50%;
+ width:145px;
+ height:125px;
+ transform:translateX(-50%);
+ pointer-events:none;
+ filter:drop-shadow(0 9px 15px #253e7650);
 }
 
-@media(max-height:650px){
- .card{padding:15px}
- .icon{width:58px;height:58px;font-size:32px;margin:10px auto}
- h1{font-size:21px}
- p{font-size:12px;margin:8px 0}
- .features{margin-top:12px}
+.cat-tail{
+ position:absolute;
+ width:55px;height:25px;
+ right:-1px;bottom:8px;
+ border:10px solid #101018;
+ border-left:0;border-bottom:0;
+ border-radius:0 35px 0 0;
+ transform:rotate(-15deg);
+ transform-origin:left bottom;
+ animation:tailMove 3.5s ease-in-out infinite;
+}
+@keyframes tailMove{
+ 0%,100%{transform:rotate(-15deg)}
+ 50%{transform:rotate(12deg)}
+}
+
+.cat-body{
+ position:absolute;
+ bottom:0;left:15px;
+ width:112px;height:84px;
+ background:linear-gradient(145deg,#242432,#090910 70%);
+ border-radius:52% 52% 25% 25%;
+ box-shadow:
+ inset 0 6px 13px #ffffff12,
+ inset 0 -8px 12px #000,
+ 0 0 20px #4c65ad33;
+ z-index:2;
+}
+
+/* Ушки */
+.cat-ear{
+ position:absolute;
+ top:-24px;
+ width:47px;height:52px;
+ background:linear-gradient(145deg,#292938,#0b0b13);
+ clip-path:polygon(0 100%,14% 0,100% 75%);
+}
+.cat-ear.left{left:0;transform:rotate(-7deg)}
+.cat-ear.right{right:0;transform:scaleX(-1) rotate(-7deg)}
+
+.cat-ear:after{
+ content:"";
+ position:absolute;
+ top:12px;left:13px;
+ width:22px;height:27px;
+ background:linear-gradient(145deg,#5b405e,#201b2b);
+ clip-path:polygon(0 100%,18% 0,100% 80%);
+}
+
+/* Пушистые детали */
+.cat-fur{
+ position:absolute;
+ background:#151521;
+ border-radius:50%;
+}
+.cat-fur.one{top:4px;left:24px;width:22px;height:12px}
+.cat-fur.two{top:2px;right:22px;width:22px;height:12px}
+.cat-fur.three{top:14px;left:-4px;width:17px;height:23px}
+.cat-fur.four{top:14px;right:-4px;width:17px;height:23px}
+
+/* Мордочка */
+.cat-face{
+ position:absolute;
+ top:31px;left:15px;
+ width:82px;height:44px;
+}
+.cat-eye{
+ position:absolute;
+ top:7px;
+ width:16px;height:11px;
+ background:#05050a;
+ border:1px solid #69708d;
+ border-radius:50%;
+ box-shadow:0 0 6px #a3b7ff44;
+ transition:transform .65s cubic-bezier(.2,.8,.2,1);
+}
+.cat-eye:after{
+ content:"";
+ position:absolute;
+ top:1px;left:3px;
+ width:4px;height:4px;
+ border-radius:50%;
+ background:#d5e0ff;
+}
+.cat-eye.left{left:8px}
+.cat-eye.right{right:8px}
+
+.cat-nose{
+ position:absolute;top:24px;left:38px;
+ width:8px;height:6px;
+ background:#a18ba6;border-radius:50%;
+}
+.cat-mouth{
+ position:absolute;top:29px;left:36px;
+ width:12px;height:7px;
+ border-bottom:2px solid #9c91a9;
+ border-radius:50%;
+}
+
+/* Усики */
+.whiskers{
+ position:absolute;top:27px;
+ width:28px;height:15px;
+}
+.whiskers.left{left:-13px}
+.whiskers.right{right:-13px;transform:scaleX(-1)}
+.whiskers:before,.whiskers:after{
+ content:"";
+ position:absolute;left:0;
+ width:27px;height:1px;
+ background:#6d6a82;
+}
+.whiskers:before{top:3px;transform:rotate(12deg)}
+.whiskers:after{top:10px;transform:rotate(-12deg)}
+
+/* Брови */
+.cat-brow{
+ position:absolute;top:0;
+ width:20px;height:4px;
+ border-radius:5px;background:#050509;
+}
+.cat-brow.left{left:5px;transform:rotate(18deg)}
+.cat-brow.right{right:5px;transform:rotate(-18deg)}
+
+/* Лапки */
+.cat-paw{
+ position:absolute;
+ bottom:-3px;
+ width:42px;height:29px;
+ border-radius:50%;
+ background:linear-gradient(145deg,#242432,#07070c);
+ box-shadow:inset 0 4px 5px #ffffff0d,0 2px 5px #000;
+ z-index:5;
+ transition:transform .7s cubic-bezier(.22,.75,.25,1);
+}
+.cat-paw.left{left:3px}
+.cat-paw.right{right:3px}
+
+/* Пальчики на лапках */
+.cat-paw:before,.cat-paw:after{
+ content:"";
+ position:absolute;
+ bottom:7px;
+ width:1px;height:8px;
+ background:#424052;
+ border-radius:2px;
+}
+.cat-paw:before{left:14px}
+.cat-paw:after{left:23px}
+
+/* Кот закрывает глаза лапками */
+#cuteCat.cover-eyes .cat-paw.left{
+ transform:translate(18px,-40px) rotate(-28deg);
+}
+#cuteCat.cover-eyes .cat-paw.right{
+ transform:translate(-18px,-40px) rotate(28deg);
+}
+#cuteCat.cover-eyes .cat-eye{
+ transform:scaleY(.05);
+}
+
+/* Сердитый взгляд */
+#cuteCat.angry .cat-eye{
+ height:5px;
+ transform:rotate(-15deg);
+}
+#cuteCat.angry .cat-brow{
+ height:5px;
+}
+#cuteCat.angry .cat-mouth{
+ border-bottom:0;
+ border-top:2px solid #a18ba6;
+}
+
+/* Моргнул */
+#cuteCat.blink .cat-eye{transform:scaleY(.08)}
+#cuteCat.blink .cat-paw.left{transform:translateY(-8px) rotate(-8deg)}
+#cuteCat.blink .cat-paw.right{transform:translateY(-8px) rotate(8deg)}
+
+@media(max-height:700px){
+ .glass{padding:22px 18px}
+ h2{font-size:25px}
+ .news{gap:8px}
+ .newsitem{padding:12px}
+ .logo{width:65px;height:65px;font-size:34px}
+ #cuteCat{transform:translateX(-50%) scale(.85);transform-origin:bottom center}
 }
 </style>
 </head>
 
 <body>
+<div id="viewport">
 
-<div class="viewport" id="viewport">
-
-<!-- 1. ПРИВЕТСТВИЕ -->
-<section class="screen">
- <div class="card">
-  <div class="brand">Wen<span>0x</span></div>
-  <div class="line"></div>
-
-  <div class="icon">💎</div>
-
-  <h1>Добро пожаловать!</h1>
-  <p>
-   Wen0x — современный цифровой магазин
-   с красивым оформлением и удобной навигацией.
-  </p>
-
-  <div class="tag">✨ Автоматическая выдача</div>
-  <div class="footer">Экран 01 · Wen0x Store</div>
+<section class="screen active">
+ <div class="content">
+  <div class="logo reveal">W</div>
+  <span class="tag reveal">DIGITAL EXPERIENCE</span>
+  <h1 class="reveal">Wen0x</h1>
+  <p class="reveal">Новый взгляд на цифровые товары.<br>Современно. Красиво. Удобно.</p>
  </div>
 </section>
 
-<!-- 2. О МАГАЗИНЕ -->
 <section class="screen">
- <div class="card">
-  <div class="brand">Wen<span>0x</span></div>
-  <div class="icon">🛍️</div>
-
-  <h1>Наш магазин</h1>
-  <p>
-   Мы стремимся сделать получение цифровых
-   товаров простым и удобным.
-  </p>
-  <p>
-   Современный дизайн, аккуратные карточки
-   и понятные переходы между разделами.
-  </p>
-
-  <div class="features">
-   <div class="feature"><b>⚡</b>Удобство</div>
-   <div class="feature"><b>💎</b>Дизайн</div>
-   <div class="feature"><b>✨</b>Комфорт</div>
-  </div>
-
-  <div class="footer">Экран 02 · О магазине</div>
+ <div class="content glass">
+  <span class="tag reveal">О НАС</span>
+  <h2 class="reveal">Добро пожаловать в Wen0x</h2>
+  <p class="reveal">Это пространство цифровых товаров, удобной навигации и современного оформления.</p>
+  <p class="reveal" style="margin-top:13px">Мы делаем каждое знакомство с магазином простым и приятным.</p>
  </div>
 </section>
 
-<!-- 3. ТОВАР -->
 <section class="screen">
- <div class="card">
-  <div class="icon">📧</div>
-
-  <h1>Gmail</h1>
-  <p>
-   Электронная почта Google для отправки
-   и получения писем, вложений и сообщений.
-  </p>
-
-  <div class="tag">Google Mail</div>
-
-  <div class="features">
-   <div class="feature"><b>✉️</b>Письма</div>
-   <div class="feature"><b>📎</b>Вложения</div>
-   <div class="feature"><b>🔐</b>Вход</div>
+ <div class="content">
+  <span class="tag reveal">ПОПУЛЯРНЫЙ СЕРВИС</span>
+  <div class="product reveal">
+   <div class="gmail"></div>
+   <h2>Gmail</h2>
+   <p>Электронная почта Google. Общайтесь, получайте письма и управляйте сообщениями в одном месте.</p>
+   <a class="button" href="https://mail.google.com/">Открыть Gmail ↗</a>
   </div>
-
-  <div class="footer">Экран 03 · Карточка товара</div>
  </div>
 </section>
 
-<!-- 4. ПОДГОТОВКА -->
 <section class="screen">
- <div class="card">
-  <div class="icon">🚀</div>
-
-  <h1>Подготовка перехода</h1>
-  <p>
-   Сейчас откроется официальное приложение
-   Gmail, если оно установлено на устройстве.
-  </p>
-
-  <div class="progress-bg">
-   <div class="progress" id="progress"></div>
+ <div class="content glass">
+  <span class="tag reveal">GMAIL PREVIEW</span>
+  <h2 class="reveal">Ваша почта</h2>
+  <p class="reveal">Анимированная демонстрация интерфейса.</p>
+  <div class="mail reveal">
+   <div class="mailhead">✉ Gmail · Демонстрация</div>
+   <div class="mailrow"><div class="avatar">G</div><div><b>Google</b><br><small>Добро пожаловать!</small></div></div>
+   <div class="mailrow"><div class="avatar">W</div><div><b>Wen0x</b><br><small>Спасибо, что заглянули!</small></div></div>
+   <div class="mailrow"><div class="avatar">✉</div><div><b>Входящие</b><br><small>Ваши сообщения в одном месте</small></div></div>
   </div>
-
-  <div class="status" id="status">
-   Подготовка...
-  </div>
-
-  <div class="footer">Экран 04 · Wen0x</div>
+  <p style="font-size:10px;margin-top:10px">Макет для демонстрации, не реальные письма.</p>
  </div>
 </section>
 
-<!-- 5. ПОСЛЕДНИЙ ЭКРАН -->
 <section class="screen">
- <div class="card">
-  <div class="icon">💙</div>
+ <div class="content glass">
+  <span class="tag reveal">WEN0X UPDATE</span>
+  <h2 class="reveal">Новости</h2>
+  <div class="news">
+   <div class="newsitem reveal"><span>ОБНОВЛЕНИЕ</span><b>✨ Новый дизайн</b><p>Обновлённый внешний вид и плавные эффекты.</p></div>
+   <div class="newsitem reveal"><span>НОВИНКА</span><b>📧 Gmail Preview</b><p>Добавлена анимированная демонстрация почты.</p></div>
+   <div class="newsitem reveal"><span>WEN0X</span><b>🚀 Новая презентация</b><p>Знакомство с магазином стало удобнее.</p></div>
+  </div>
+ </div>
+</section>
 
-  <h1>Переход в Gmail</h1>
-  <p>
-   Все этапы завершены.
-   Открываем официальную почту Google.
-  </p>
-
-  <div class="tag">Wen0x · Автоматическая выдача</div>
-
-  <a class="button"
-     href="https://mail.google.com/">
-     Открыть Gmail вручную →
-  </a>
+<section class="screen">
+ <div class="content glass">
+  <div class="logo">W</div>
+  <span class="tag">ЗАВЕРШЕНИЕ</span>
+  <h2>Переходим к Gmail</h2>
+  <p id="status">Подготавливаем официальный сервис Google...</p>
+  <div class="progress"><span id="bar"></span></div>
  </div>
 </section>
 
 </div>
 
+<div id="counter">WEN0X · 01 / 06</div>
+
+<!-- Чёрный котик -->
+<div id="cuteCat" class="angry">
+ <div class="cat-tail"></div>
+ <div class="cat-body">
+  <div class="cat-ear left"></div>
+  <div class="cat-ear right"></div>
+
+  <div class="cat-fur one"></div>
+  <div class="cat-fur two"></div>
+  <div class="cat-fur three"></div>
+  <div class="cat-fur four"></div>
+
+  <div class="cat-face">
+   <div class="cat-brow left"></div>
+   <div class="cat-brow right"></div>
+   <div class="cat-eye left"></div>
+   <div class="cat-eye right"></div>
+   <div class="cat-nose"></div>
+   <div class="cat-mouth"></div>
+   <div class="whiskers left"></div>
+   <div class="whiskers right"></div>
+  </div>
+
+  <div class="cat-paw left"></div>
+  <div class="cat-paw right"></div>
+ </div>
+</div>
+
 <script>
-const viewport = document.getElementById("viewport");
-const screens = document.querySelectorAll(".screen");
-const progress = document.getElementById("progress");
-const status = document.getElementById("status");
+const screens=[...document.querySelectorAll(".screen")];
+const counter=document.getElementById("counter");
+const bar=document.getElementById("bar");
+const statusText=document.getElementById("status");
+const cat=document.getElementById("cuteCat");
+const viewport=document.getElementById("viewport");
 
-const gmailApp = "googlegmail://";
-const gmailWeb =
- "https://accounts.google.com/ServiceLogin?service=mail&continue=https%3A%2F%2Fmail.google.com%2Fmail%2F";
+let current=0;
+let transitionTimer;
 
-let current = 0;
-let stopped = false;
+const PAUSE=2500;
+const PAW_TIME=650;
 
-function openGmail(){
- if(stopped) return;
- stopped = true;
+function showScreen(n){
+ clearTimeout(transitionTimer);
 
- status.textContent = "Открываем приложение Gmail...";
+ cat.classList.remove("angry","blink");
+ cat.classList.add("cover-eyes");
+ viewport.classList.add("transition-blur");
 
- // Сначала пробуем открыть установленное приложение.
- window.location.href = gmailApp;
+ screens.forEach((s,i)=>s.classList.toggle("active",i===n));
 
- // Если приложение не открылось, переходим на сайт Gmail.
- setTimeout(()=>{
-  if(!document.hidden){
-   window.location.href = gmailWeb;
-  }
- },1800);
+ current=n;
+ counter.textContent=`WEN0X · ${String(n+1).padStart(2,"0")} / 06`;
+
+ // Котик держит лапки у глаз чуть дольше
+ transitionTimer=setTimeout(()=>{
+  viewport.classList.remove("transition-blur");
+  cat.classList.remove("cover-eyes");
+  cat.classList.add("angry");
+ },PAW_TIME);
+
+ if(n===screens.length-1)finish();
 }
 
-function nextScreen(){
- if(stopped) return;
-
- current++;
-
- if(current < screens.length){
-  viewport.scrollTo({
-   top: screens[current].offsetTop,
-   behavior: "smooth"
-  });
-
-  // После прокрутки ждём 3 секунды.
-  setTimeout(nextScreen, 3000);
-
- } else {
-  status.textContent = "Завершение...";
-  progress.style.width = "100%";
-
-  setTimeout(openGmail, 1300);
+function next(){
+ if(current<screens.length-1){
+  showScreen(current+1);
+  setTimeout(next,3800);
  }
 }
 
-// Автоматически начинаем после загрузки сайта.
+function finish(){
+ statusText.textContent="Презентация завершена. Открываем Gmail...";
+ setTimeout(()=>bar.style.width="100%",200);
+ setTimeout(openGmail,5500);
+}
+
+function openGmail(){
+ window.location.href="googlegmail://";
+ setTimeout(()=>{
+  if(!document.hidden)window.location.href="https://mail.google.com/";
+ },1800);
+}
+
+/* Котик иногда моргает */
+function catBlink(){
+ if(cat.classList.contains("cover-eyes"))return;
+ cat.classList.add("blink");
+ setTimeout(()=>cat.classList.remove("blink"),550);
+ setTimeout(catBlink,4000+Math.random()*2500);
+}
+setTimeout(catBlink,2500);
+
 window.addEventListener("load",()=>{
- setTimeout(nextScreen,3000);
+ setTimeout(next,2500);
 });
-
-// Запрещаем ручную прокрутку и жесты прокрутки.
-viewport.addEventListener("wheel",e=>e.preventDefault(),{passive:false});
-viewport.addEventListener("touchmove",e=>e.preventDefault(),{passive:false});
 </script>
-
 </body>
 </html>
