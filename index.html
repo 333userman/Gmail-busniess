@@ -4,182 +4,443 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#b9dcff">
-<title>Wen0x — Gmail Store</title>
+<meta name="theme-color" content="#102e60">
+<title>Wen0x — Google Store</title>
 
 <style>
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
- margin:0;
- font-family:-apple-system,Arial,sans-serif;
- color:#20466e;
- background:linear-gradient(145deg,#eaf6ff,#b9dcff,#e4f2ff);
+* {
+  box-sizing: border-box;
 }
-header{
- padding:20px;
- text-align:center;
- font-size:27px;
- font-weight:900;
+
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
 }
-header span{color:#398edb}
-section{
- min-height:90vh;
- padding:30px 20px;
- display:flex;
- align-items:center;
- justify-content:center;
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  color: white;
+  background: #102e60 url("anime.png") center/cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 18px;
+  position: relative;
 }
-.card{
- width:100%;
- max-width:440px;
- padding:25px;
- text-align:center;
- background:#ffffff80;
- border:1px solid white;
- border-radius:28px;
- box-shadow:0 15px 40px #477eaa20;
- backdrop-filter:blur(20px);
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    145deg,
+    rgba(8, 35, 78, .48),
+    rgba(24, 105, 190, .40),
+    rgba(5, 25, 65, .72)
+  );
+  z-index: 0;
 }
-.character{
- width:100%;
- height:270px;
- object-fit:cover;
- border-radius:20px;
+
+.decor {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
 }
-h1{font-size:35px;margin:20px 0 10px}
-p{color:#6382a1;line-height:1.6}
-.icon{font-size:55px;margin-bottom:15px}
-.tag{
- display:inline-block;
- padding:10px 16px;
- background:#d9edff;
- border-radius:14px;
- font-weight:700;
- color:#347fbd;
+
+.orb {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border: 1px solid #ffffff35;
+  border-radius: 50%;
+  background: #a9dcff12;
+  backdrop-filter: blur(4px);
+  animation: float 8s ease-in-out infinite alternate;
 }
-.progress-bg{
- height:10px;
- background:#d6eaff;
- border-radius:20px;
- overflow:hidden;
- margin-top:22px;
+
+.orb.one {
+  top: -75px;
+  left: -65px;
 }
-.progress{
- height:100%;
- width:0;
- background:linear-gradient(90deg,#55a9ef,#8bdfff);
- transition:width .1s;
+
+.orb.two {
+  bottom: -90px;
+  right: -65px;
+  animation-delay: -3s;
 }
-.status{font-size:13px;margin-top:15px}
-button{
- border:0;
- background:#398edb;
- color:white;
- padding:14px 22px;
- border-radius:14px;
- font-weight:bold;
- cursor:pointer;
- margin-top:18px;
+
+@keyframes float {
+  from { transform: translate3d(0,0,0); }
+  to { transform: translate3d(20px,-25px,0); }
 }
-footer{text-align:center;padding:25px;font-size:12px;color:#7895af}
+
+.main {
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  z-index: 2;
+  animation: appear 1000ms cubic-bezier(.16,1,.3,1) both;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(35px) scale(.96);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.card {
+  padding: 29px 23px;
+  border-radius: 30px;
+  text-align: center;
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,.23),
+    rgba(160,215,255,.10)
+  );
+  border: 1px solid rgba(255,255,255,.48);
+  box-shadow:
+    0 25px 80px #001b4655,
+    inset 0 1px 1px #ffffff80;
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  transition: all 1000ms cubic-bezier(.16,1,.3,1);
+}
+
+.brand {
+  font-size: 39px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-shadow: 0 4px 20px #79caff88;
+}
+
+.brand span {
+  color: #a9e4ff;
+}
+
+.line {
+  width: 75px;
+  height: 3px;
+  margin: 12px auto 20px;
+  border-radius: 20px;
+  background: linear-gradient(90deg,transparent,#bcecff,transparent);
+}
+
+.subtitle {
+  color: #e0f3ff;
+  font-size: 13px;
+  letter-spacing: 3px;
+  margin-bottom: 25px;
+}
+
+.icon {
+  width: 78px;
+  height: 78px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 19px;
+  font-size: 42px;
+  border-radius: 23px;
+  background: #ffffff20;
+  border: 1px solid #ffffff65;
+  box-shadow: inset 0 0 20px #ffffff20;
+}
+
+h1 {
+  font-size: 24px;
+  margin: 0 0 10px;
+}
+
+.description {
+  color: #d6ecff;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.label {
+  display: block;
+  text-align: left;
+  font-size: 12px;
+  color: #e4f4ff;
+  margin-bottom: 9px;
+}
+
+.input {
+  width: 100%;
+  height: 54px;
+  padding: 0 17px;
+  outline: none;
+  border-radius: 16px;
+  border: 1px solid #ffffff70;
+  color: white;
+  font-size: 16px;
+  background: #ffffff19;
+  transition: all 1000ms;
+}
+
+.input::placeholder {
+  color: #d0e8ff;
+}
+
+.input:focus {
+  border-color: #b9edff;
+  box-shadow: 0 0 0 4px #9bdcff25;
+  background: #ffffff29;
+}
+
+.button {
+  width: 100%;
+  border: 1px solid #ffffff75;
+  border-radius: 16px;
+  margin-top: 17px;
+  padding: 16px;
+  color: #174b83;
+  background: linear-gradient(110deg,#ffffff,#c9eaff);
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 25px #001c4540;
+  transition: transform 1000ms, box-shadow 1000ms;
+}
+
+.button:active {
+  transform: scale(.96);
+}
+
+.button:disabled {
+  opacity: .7;
+  cursor: wait;
+}
+
+.status {
+  min-height: 23px;
+  margin-top: 14px;
+  color: #e2f5ff;
+  font-size: 13px;
+}
+
+.features {
+  display: flex;
+  justify-content: space-around;
+  gap: 8px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid #ffffff35;
+}
+
+.feature {
+  flex: 1;
+  font-size: 11px;
+  color: #d6edff;
+  line-height: 1.5;
+}
+
+.feature b {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.progress-wrap {
+  display: none;
+  margin-top: 20px;
+  opacity: 0;
+  transition: opacity 1000ms;
+}
+
+.progress-bg {
+  height: 9px;
+  background: #ffffff35;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  width: 0;
+  border-radius: 20px;
+  background: linear-gradient(90deg,#a4dcff,#fff);
+  box-shadow: 0 0 18px #9edfff;
+  transition: width 1000ms cubic-bezier(.16,1,.3,1);
+}
+
+.error {
+  animation: shake 450ms ease;
+}
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-9px); }
+  40% { transform: translateX(9px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+.success {
+  transform: scale(1.025);
+  box-shadow: 0 0 60px #80d5ff70;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 17px;
+  font-size: 11px;
+  color: #d2eaff;
+}
+
+@media(max-height:700px) {
+  .card { padding: 17px; }
+  .icon { width: 55px; height: 55px; font-size: 30px; margin-bottom: 10px; }
+  .brand { font-size: 31px; }
+  .subtitle { margin-bottom: 13px; }
+  .description { margin-bottom: 15px; }
+  .features { margin-top: 13px; padding-top: 12px; }
+}
 </style>
 </head>
 
 <body>
 
-<header>Wen<span>0x</span></header>
+<div class="decor">
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+</div>
 
-<section id="first">
- <div class="card">
-  <img class="character" src="anime.png" alt="Персонажи Wen0x">
-  <h1>Wen0x</h1>
-  <p>Добро пожаловать в наш цифровой магазин!</p>
-  <div class="tag">✨ Автоматическая выдача</div>
- </div>
-</section>
+<main class="main">
+  <div class="card" id="card">
 
-<section id="second">
- <div class="card">
-  <div class="icon">💎</div>
-  <h1>Быстро и удобно</h1>
-  <p>Подготавливаем переход к официальному сервису Gmail.</p>
-  <div class="tag">🔒 Безопасный вход Google</div>
- </div>
-</section>
+    <div class="brand">Wen<span>0x</span></div>
+    <div class="line"></div>
+    <div class="subtitle">GOOGLE STORE</div>
 
-<section id="third">
- <div class="card">
-  <div class="icon">📧</div>
-  <h1>Gmail</h1>
-  <p>Сейчас откроется официальная страница входа в почту Google.</p>
-  <div class="progress-bg">
-   <div class="progress" id="progress"></div>
+    <div class="icon">✉️</div>
+
+    <h1>Добро пожаловать!</h1>
+
+    <div class="description">
+      Подтвердите название нашего магазина,
+      чтобы перейти к официальному входу Gmail.
+    </div>
+
+    <form id="verifyForm">
+      <label class="label" for="shopName">
+        Название магазина
+      </label>
+
+      <input
+        class="input"
+        id="shopName"
+        type="text"
+        placeholder="Введите Wen0x"
+        autocomplete="off"
+        maxlength="30"
+        required
+      >
+
+      <button class="button" id="submitButton" type="submit">
+        Продолжить →
+      </button>
+    </form>
+
+    <div class="status" id="status" aria-live="polite">
+      Ожидание подтверждения
+    </div>
+
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-bg">
+        <div class="progress" id="progress"></div>
+      </div>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <b>⚡</b>
+        Быстрый переход
+      </div>
+      <div class="feature">
+        <b>🔒</b>
+        Вход Google
+      </div>
+      <div class="feature">
+        <b>💎</b>
+        Wen0x Store
+      </div>
+    </div>
+
   </div>
-  <div class="status" id="status">Завершение перехода...</div>
-  <button onclick="goGmail()">Перейти в Gmail →</button>
- </div>
-</section>
 
-<footer>Wen0x © 2026</footer>
+  <div class="footer">
+    Wen0x © 2026 · Официальный вход Google
+  </div>
+</main>
 
 <script>
-const sections = [
- document.getElementById("second"),
- document.getElementById("third")
-];
+const form = document.getElementById("verifyForm");
+const input = document.getElementById("shopName");
+const card = document.getElementById("card");
+const status = document.getElementById("status");
+const button = document.getElementById("submitButton");
+const progressWrap = document.getElementById("progressWrap");
+const progress = document.getElementById("progress");
 
-let index = 0;
-let stopped = false;
+const gmailURL =
+"https://accounts.google.com/ServiceLogin?service=mail&continue=https%3A%2F%2Fmail.google.com%2Fmail%2F";
 
-function goGmail(){
- stopped = true;
- window.location.href =
- "https://accounts.google.com/ServiceLogin?service=mail&continue=https%3A%2F%2Fmail.google.com%2Fmail%2F";
-}
+let busy = false;
 
-// Автоматическая прокрутка каждые 3 секунды
-const scrollTimer = setInterval(()=>{
- if(stopped) {
-  clearInterval(scrollTimer);
-  return;
- }
+form.addEventListener("submit", function(event) {
+  event.preventDefault();
 
- if(index < sections.length){
-  sections[index].scrollIntoView({
-   behavior:"smooth",
-   block:"start"
+  if (busy) return;
+
+  const entered = input.value.trim().toLowerCase();
+
+  if (entered !== "wen0x") {
+    status.textContent = "❌ Неверное название магазина. Попробуйте ещё раз.";
+    card.classList.remove("error");
+    void card.offsetWidth;
+    card.classList.add("error");
+    input.focus();
+    return;
+  }
+
+  busy = true;
+  input.disabled = true;
+  button.disabled = true;
+
+  status.textContent = "✓ Название Wen0x подтверждено!";
+  card.classList.add("success");
+
+  progressWrap.style.display = "block";
+
+  requestAnimationFrame(() => {
+    progressWrap.style.opacity = "1";
+
+    setTimeout(() => {
+      progress.style.width = "100%";
+    }, 100);
   });
-  index++;
- }else{
-  clearInterval(scrollTimer);
-  startProgress();
- }
-},3000);
 
-function startProgress(){
- if(stopped)return;
+  setTimeout(() => {
+    status.textContent = "Подготавливаем переход в Gmail...";
+  }, 350);
 
- const bar=document.getElementById("progress");
- const status=document.getElementById("status");
- let value=0;
-
- const animation=setInterval(()=>{
-  if(stopped){
-   clearInterval(animation);
-   return;
-  }
-
-  value+=10;
-  bar.style.width=value+"%";
-
-  if(value>=100){
-   clearInterval(animation);
-   status.textContent="Переход на Gmail...";
-   goGmail();
-  }
- },60);
-}
+  setTimeout(() => {
+    window.location.assign(gmailURL);
+  }, 1600);
+});
 </script>
 
 </body>
